@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Tail logs from the running app container on a remote host.
+# Usage: bin/logs [tail_lines]
+# Optional env overrides:
+#   REMOTE_APP_HOST=deploy
+#   REMOTE_APP_CONTAINER_PATTERN=template_app-web
+set -euo pipefail
+
+host="${REMOTE_APP_HOST:-deploy}"
+container_pattern="${REMOTE_APP_CONTAINER_PATTERN:-template_app-web}"
+tail_lines="${1:-200}"
+
+if ! [[ "$tail_lines" =~ ^[0-9]+$ ]]; then
+  echo "Usage: bin/logs [tail_lines]"
+  exit 1
+fi
+
+ssh -t "$host" \
+  "container=\$(docker ps --filter name=$container_pattern --format '{{.Names}}' | head -1); \
+   if [ -z \"\$container\" ]; then \
+     echo 'No running container matched $container_pattern'; \
+     exit 1; \
+   fi; \
+   docker logs --tail $tail_lines -f \"\$container\" 2>&1"

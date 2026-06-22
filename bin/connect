@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Connect to a remote IEx session on the running app container.
+# Usage: bin/connect
+# Optional env overrides:
+#   REMOTE_APP_HOST=deploy
+#   REMOTE_APP_CONTAINER_PATTERN=template_app-web
+#   REMOTE_APP_RELEASE_BIN=bin/template_app
+set -euo pipefail
+
+if [ "$#" -ne 0 ]; then
+  echo "Usage: bin/connect"
+  exit 1
+fi
+
+host="${REMOTE_APP_HOST:-deploy}"
+container_pattern="${REMOTE_APP_CONTAINER_PATTERN:-template_app-web}"
+release_bin="${REMOTE_APP_RELEASE_BIN:-bin/template_app}"
+
+ssh -t "$host" \
+  "container=\$(docker ps --filter name=$container_pattern --format '{{.Names}}' | head -1); \
+   if [ -z \"\$container\" ]; then \
+     echo 'No running container matched $container_pattern'; \
+     exit 1; \
+   fi; \
+   docker exec -it \"\$container\" $release_bin remote"

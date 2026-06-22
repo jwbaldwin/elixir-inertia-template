@@ -1,0 +1,50 @@
+service: template_app
+image: <%= ENV.fetch("KAMAL_IMAGE") %>
+run_directory: /opt/kamal
+
+servers:
+  web:
+    hosts:
+      - <%= ENV.fetch("KAMAL_SERVER_IP") %>
+    options:
+      stop-timeout: 240
+
+drain_timeout: 240
+
+proxy:
+  ssl: true
+  forward_headers: true
+  hosts:
+    - <%= ENV.fetch("PHX_HOST") %>
+  app_port: 4000
+  healthcheck:
+    path: /healthz
+    interval: 3
+    timeout: 5
+
+registry:
+  server: ghcr.io
+  username: <%= ENV.fetch("KAMAL_REGISTRY_USERNAME") %>
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+builder:
+  local: true
+  arch: amd64
+
+env:
+  clear:
+    MIX_ENV: "prod"
+    PHX_SERVER: "true"
+    PORT: "4000"
+    PHX_HOST: <%= ENV.fetch("PHX_HOST") %>
+    POOL_SIZE: "10"
+    RELEASE_DISTRIBUTION: "name"
+    RELEASE_NODE: "template_app@127.0.0.1"
+    LANG: "C.UTF-8"
+  secret:
+    - DATABASE_URL:DATABASE_URL
+    - SECRET_KEY_BASE:SECRET_KEY_BASE
+
+ssh:
+  user: deploy

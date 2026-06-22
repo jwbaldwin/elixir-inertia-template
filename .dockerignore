@@ -1,0 +1,17 @@
+_build
+deps
+.git
+.env*
+node_modules
+assets/node_modules
+test
+tmp
+cover
+doc
+.opencode
+.expert
+priv/static/assets
+*.tgz
+*.log
+.DS_Store
+erl_crash.dump
