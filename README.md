@@ -12,6 +12,75 @@ The template includes the reusable foundation expected in many product apps: aut
 - Quality: Credo, Styler, oxlint, oxfmt
 - Deployment: Dockerfile and optional Kamal config
 
+## What This Template Is
+
+This is an opinionated product starter, not a blank Phoenix app and not a framework.
+
+It starts from a few beliefs:
+
+- Phoenix should own routes, auth, persistence, background jobs, and server truth.
+- React should render typed Inertia pages from server-provided props.
+- Product code should grow in small vertical slices, not speculative architecture.
+- Names should describe the human job being done, not API mechanics or generic data shapes.
+- Deleted code is better than generic abstractions around behavior a product no longer needs.
+
+## Included Product Foundation
+
+- Email/password registration, login, logout, confirmation, and account settings.
+- Organizations, memberships, organization switching, invitations, and member removal.
+- A small authenticated dashboard that proves Phoenix-to-Inertia props work.
+- Swoosh mailer setup with local mailbox in development and runtime production adapter config.
+- Oban installed with a default queue, Lifeline, test config, and Oban Web mounted in dev.
+- Health check endpoint at `/healthz`.
+- Seeds for a demo user and organization.
+
+## Opinionated Module Structure
+
+The reusable example domain is `lib/template_app/organizations`.
+
+- `handlers/`: top-level orchestration for domain workflows.
+- `services/`: action/write modules that do one operation and own side effects.
+- `finders/`: read/query modules that do not write.
+- `values/`: response and prop-shaping modules.
+- contexts: CRUD-like schema operations, not business-process dumping grounds.
+- workers: Oban durability boundaries that should call handlers, services, or finders.
+
+Read `AGENTS.md` before adding real product code. The taxonomy there is a contract for future work, not optional style advice.
+
+## Agent Guidance And Docs
+
+The template keeps the guidance close to the code because future agents should preserve the intended shape.
+
+- `AGENTS.md`: project-level architecture, naming, testing, Phoenix, Ecto, Oban, and Inertia rules.
+- `assets/AGENTS.md`: frontend-specific rules for React, Inertia props, layouts, and UI components.
+- `docs/DESIGN_PRINCIPLES.md`: product and engineering decision rules.
+- `docs/CODE_STYLE_GUIDANCE.md`: naming, tests, config, helpers, idempotency, and review preferences.
+- `docs/inertia-typescript-typing.md`: how to keep Phoenix controller props and TypeScript page props aligned.
+- `docs/REMOTE_OPERATIONS.md`: how to use and update `bin/connect` and `bin/logs`.
+- `docs/TEMPLATE_INVENTORY.md`: what was kept, removed, and intentionally generalized.
+
+## Library Choices
+
+- Phoenix and Ecto for the server, routing, controller boundary, and database layer.
+- Inertia for server-owned page state rendered by React.
+- PostgreSQL as the database target.
+- Oban for retryable background work.
+- Swoosh for email.
+- Req for outbound HTTP clients.
+- Bodyguard for authorization policies.
+- Dotenvy for local `.env` loading.
+- Bandit as the Phoenix adapter.
+- React, TypeScript, Vite, Bun, Tailwind, and shadcn-style components for the frontend.
+- Radix UI, Headless UI, lucide-react, sonner, and small UI helpers for accessible interface primitives.
+- ExUnit, Phoenix.ConnTest, ExMachina, Mimic, LazyHTML, and Vitest for tests.
+- Credo, Styler, oxlint, and oxfmt for code quality.
+
+## What Is Only Scaffolding
+
+- CI currently does not enforce checks. It is a placeholder to fill in when a new project is ready.
+- Dockerfile, Kamal config, `bin/connect`, and `bin/logs` assume a Docker/Kamal-style deploy but are optional.
+- The dashboard is only a proof that authenticated Inertia pages work. Replace it with the first real product page.
+
 ## Create A New Project
 
 1. Copy this template directory into your new repository.
