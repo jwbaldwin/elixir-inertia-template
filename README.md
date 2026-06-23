@@ -1,40 +1,43 @@
 # Elixir Inertia Template
 
-Elixir Inertia Template is a reusable Phoenix/Inertia starter for small product teams that want Phoenix to own routing, auth, persistence, background jobs, and server truth while React renders Inertia pages.
+Elixir Inertia Template is a reusable Phoenix/Inertia starter for small product teams. It pairs Phoenix's backend strength with Inertia's React ergonomics, so teams can build fast without splitting the product into a separate API and SPA.
 
-The template includes the reusable foundation expected in many product apps: authentication, organizations, invitations, account settings, a small dashboard, CI scaffolding, deployment scaffolding, and agent guidance.
+The template includes the reusable foundation expected in many product apps: authentication, organizations, invitations, account settings, a small dashboard, CI scaffolding, deployment scaffolding, and strong agent guidance.
 
 ## Tech Stack
 
-- Backend: Elixir, Phoenix 1.8, Ecto, PostgreSQL, Oban, Swoosh, Req
-- Frontend: Inertia, React, TypeScript, Vite, Bun, Tailwind, shadcn-style components
-- Testing: ExUnit, Phoenix.ConnTest, ExMachina, Mimic, Vitest, LazyHTML
+- Backend: Elixir, Phoenix, Ecto, PostgreSQL, Oban, Req
+- Frontend: Inertia, React, TypeScript, Vite, Bun, Tailwind, shadcn components
+- Testing: ExUnit, ExMachina, Mimic, Vitest
 - Quality: Credo, Styler, oxlint, oxfmt
-- Deployment: Dockerfile and optional Kamal config
+- Deployment: Kamal
 
-## What This Template Is
+## Why Use This Template
 
-This is an opinionated product starter, not a blank Phoenix app and not a framework.
+Phoenix is the best framework in the world for owning routing, auth, persistence, background jobs, and server truth.
 
-It starts from a few beliefs:
+Inertia lets React consume that server truth with super fast and ergonomic DX. You get React pages, TypeScript props, server-side routing, normal controller tests, and no separate API layer unless your product actually needs one.
 
-- Phoenix should own routes, auth, persistence, background jobs, and server truth.
-- React should render typed Inertia pages from server-provided props.
-- Product code should grow in small vertical slices, not speculative architecture.
-- Names should describe the human job being done, not API mechanics or generic data shapes.
-- Deleted code is better than generic abstractions around behavior a product no longer needs.
+This template also includes strong opinionated agent guidance embedded throughout the repo:
+
+- Architecture guidance in `AGENTS.md`
+- Frontend guidance in `assets/AGENTS.md`
+- Product and engineering decision rules in `docs/DESIGN_PRINCIPLES.md`
+- Naming, testing, config, helper, and idempotency guidance in `docs/CODE_STYLE_GUIDANCE.md`
+- Inertia TypeScript prop guidance in `docs/inertia-typescript-typing.md`
+- Remote helper guidance in `docs/REMOTE_OPERATIONS.md`
+- Extraction notes in `docs/TEMPLATE_INVENTORY.md`
 
 ## Included Product Foundation
 
-- Email/password registration, login, logout, confirmation, and account settings.
+- Email/password registration, login, logout, confirmation, and account settings via Phoenix sessions, signed tokens, and Inertia forms.
 - Organizations, memberships, organization switching, invitations, and member removal.
 - A small authenticated dashboard that proves Phoenix-to-Inertia props work.
-- Swoosh mailer setup with local mailbox in development and runtime production adapter config.
+- Local email preview in development and runtime production mailer config.
 - Oban installed with a default queue, Lifeline, test config, and Oban Web mounted in dev.
-- Health check endpoint at `/healthz`.
 - Seeds for a demo user and organization.
 
-## Opinionated Module Structure
+## Application Module Taxonomy
 
 The reusable example domain is `lib/template_app/organizations`.
 
@@ -47,39 +50,12 @@ The reusable example domain is `lib/template_app/organizations`.
 
 Read `AGENTS.md` before adding real product code. The taxonomy there is a contract for future work, not optional style advice.
 
-## Agent Guidance And Docs
+## Included As Scaffolding
 
-The template keeps the guidance close to the code because future agents should preserve the intended shape.
-
-- `AGENTS.md`: project-level architecture, naming, testing, Phoenix, Ecto, Oban, and Inertia rules.
-- `assets/AGENTS.md`: frontend-specific rules for React, Inertia props, layouts, and UI components.
-- `docs/DESIGN_PRINCIPLES.md`: product and engineering decision rules.
-- `docs/CODE_STYLE_GUIDANCE.md`: naming, tests, config, helpers, idempotency, and review preferences.
-- `docs/inertia-typescript-typing.md`: how to keep Phoenix controller props and TypeScript page props aligned.
-- `docs/REMOTE_OPERATIONS.md`: how to use and update `bin/connect` and `bin/logs`.
-- `docs/TEMPLATE_INVENTORY.md`: what was kept, removed, and intentionally generalized.
-
-## Library Choices
-
-- Phoenix and Ecto for the server, routing, controller boundary, and database layer.
-- Inertia for server-owned page state rendered by React.
-- PostgreSQL as the database target.
-- Oban for retryable background work.
-- Swoosh for email.
-- Req for outbound HTTP clients.
-- Bodyguard for authorization policies.
-- Dotenvy for local `.env` loading.
-- Bandit as the Phoenix adapter.
-- React, TypeScript, Vite, Bun, Tailwind, and shadcn-style components for the frontend.
-- Radix UI, Headless UI, lucide-react, sonner, and small UI helpers for accessible interface primitives.
-- ExUnit, Phoenix.ConnTest, ExMachina, Mimic, LazyHTML, and Vitest for tests.
-- Credo, Styler, oxlint, and oxfmt for code quality.
-
-## What Is Only Scaffolding
-
-- CI currently does not enforce checks. It is a placeholder to fill in when a new project is ready.
-- Dockerfile, Kamal config, `bin/connect`, and `bin/logs` assume a Docker/Kamal-style deploy but are optional.
-- The dashboard is only a proof that authenticated Inertia pages work. Replace it with the first real product page.
+- Kamal deployment files.
+- GitHub CI workflow scaffold.
+- Remote helper scripts: `bin/connect` and `bin/logs`.
+- A starter dashboard to replace with the first real product page.
 
 ## Create A New Project
 
@@ -105,12 +81,6 @@ Start the server:
 
 ```sh
 mix phx.server
-```
-
-Or with IEx:
-
-```sh
-iex -S mix phx.server
 ```
 
 Open [`localhost:4000`](http://localhost:4000).
@@ -146,40 +116,6 @@ Generate a production secret with:
 mix phx.gen.secret
 ```
 
-## Common Commands
-
-Backend:
-
-```sh
-mix setup
-mix phx.server
-mix ecto.reset
-mix test
-mix lint
-mix format --check-formatted
-mix precommit
-```
-
-Frontend:
-
-```sh
-mix fe.setup
-mix fe.build
-mix fe.lint
-mix fe.format
-mix fe.format.check
-```
-
-From `assets/` directly:
-
-```sh
-bun install
-bun run test
-bun run lint
-bun run format:check
-bun run build
-```
-
 ## Testing And Linting
 
 - Run `mix precommit` before handing off backend changes.
@@ -190,32 +126,6 @@ bun run build
 
 ## Deployment Notes
 
-The template includes a Dockerfile and optional Kamal config in `config/deploy.yml`.
-
-It also includes remote helper scripts:
-
-- `bin/connect` opens remote IEx inside the running app container.
-- `bin/logs [tail_lines]` tails logs from the running app container.
-
-See `docs/REMOTE_OPERATIONS.md` before wiring these helpers to a real host.
-
-Kamal deployment expects these environment variables in the deploy environment:
-
-- `KAMAL_IMAGE`
-- `KAMAL_SERVER_IP`
-- `KAMAL_REGISTRY_USERNAME`
-- `KAMAL_REGISTRY_PASSWORD`
-- `DATABASE_URL`
-- `SECRET_KEY_BASE`
-- `PHX_HOST`
-
-CI intentionally does not auto-deploy. Wire deployment in a new project only after selecting hosting, secret storage, and rollback policy.
-
-## Template Boundaries
-
-This is not a framework. Keep it small.
-
-- Add product domains under `lib/template_app/<domain>` when real product behavior exists.
-- Keep Phoenix auth, organization membership, Inertia shared props, and the test conventions unless a new project deliberately chooses a different foundation.
-- Keep the handler/service/finder/value taxonomy examples under `lib/template_app/organizations` until a real domain supersedes them.
-- Delete the example dashboard once a real first product page exists.
+Kamal scaffolding is included, but deployment is intentionally not wired into CI.
+Use `docs/REMOTE_OPERATIONS.md` before connecting `bin/connect` or `bin/logs` to a real host.
+Choose hosting, secret storage, and rollback policy before enabling production deploys.
