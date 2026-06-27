@@ -46,7 +46,6 @@ defmodule TemplateAppWeb.Endpoint do
   plug Plug.Parsers,
     parsers: [:urlencoded, {:multipart, length: 25 * 1024 * 1024}, :json],
     pass: ["*/*"],
-    body_reader: {TemplateAppWeb.Plugs.WebhookRawBodyReader, :read_body, []},
     json_decoder: Phoenix.json_library()
 
   plug Plug.MethodOverride
