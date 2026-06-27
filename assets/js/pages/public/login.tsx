@@ -1,9 +1,10 @@
-import { Head, Link, useForm, usePage } from "@inertiajs/react";
+import { Head, useForm, usePage } from "@inertiajs/react";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox, CheckboxField } from "@/components/ui/checkbox";
+import { ErrorMessage, Field, Label } from "@/components/ui/fieldset";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Code, Text, TextLink } from "@/components/ui/text";
 import type { UnauthenticatedPageProps } from "@/types/models";
 
 interface LoginPageProps extends UnauthenticatedPageProps {
@@ -51,10 +52,10 @@ export default function Login() {
       <Head title="Log in" />
 
       {localMailAdapter && (
-        <div className="rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-sm text-blue-900">
+        <Text className="rounded-lg bg-blue-500/15 px-3 py-2 text-blue-700 dark:bg-blue-500/10 dark:text-blue-300">
           Confirmation emails are sent to the local adapter in development. Check{" "}
-          <code>/dev/mailbox</code>
-        </div>
+          <Code>/dev/mailbox</Code>
+        </Text>
       )}
 
       <form
@@ -65,7 +66,7 @@ export default function Login() {
         }}
         className="space-y-4"
       >
-        <div className="space-y-2">
+        <Field>
           <Label htmlFor="password-email">Email</Label>
           <Input
             id="password-email"
@@ -75,10 +76,10 @@ export default function Login() {
             value={passwordForm.data.email}
             onChange={(event) => passwordForm.setData("email", event.target.value)}
           />
-          {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
-        </div>
+          {errors.email ? <ErrorMessage>{errors.email}</ErrorMessage> : null}
+        </Field>
 
-        <div className="space-y-2">
+        <Field>
           <Label htmlFor="password-value">Password</Label>
           <Input
             id="password-value"
@@ -87,18 +88,17 @@ export default function Login() {
             value={passwordForm.data.password}
             onChange={(event) => passwordForm.setData("password", event.target.value)}
           />
-          {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
-        </div>
+          {errors.password ? <ErrorMessage>{errors.password}</ErrorMessage> : null}
+        </Field>
 
-        <div className="flex items-center gap-2">
+        <CheckboxField>
           <Checkbox
             id="remember-me"
             checked={passwordForm.data.remember_me}
-            onCheckedChange={(checked) => passwordForm.setData("remember_me", checked === true)}
-            className="focus-visible:border-ring focus-visible:ring-ring/50 size-4 rounded focus-visible:ring-[3px]"
+            onChange={(checked) => passwordForm.setData("remember_me", checked)}
           />
           <Label htmlFor="remember-me">Remember me</Label>
-        </div>
+        </CheckboxField>
 
         <div>
           <Button type="submit" disabled={passwordForm.processing} className="w-full">
@@ -106,15 +106,9 @@ export default function Login() {
           </Button>
         </div>
       </form>
-      <p className="text-sm text-muted-foreground">
-        Don&apos;t have an account?{" "}
-        <Link
-          href="/register"
-          className="font-medium text-foreground underline-offset-4 hover:underline"
-        >
-          Sign up
-        </Link>
-      </p>
+      <Text>
+        Don&apos;t have an account? <TextLink href="/register">Sign up</TextLink>
+      </Text>
     </>
   );
 }

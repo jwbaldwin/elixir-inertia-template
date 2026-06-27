@@ -2,9 +2,10 @@ import { Head, useForm, usePage } from "@inertiajs/react";
 import type { FormEvent } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ErrorMessage, Field, Label } from "@/components/ui/fieldset";
+import { Heading, Subheading } from "@/components/ui/heading";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Text } from "@/components/ui/text";
 import type { SharedPageProps } from "@/types/models";
 
 interface AccountSettingsPageProps extends SharedPageProps {
@@ -46,14 +47,15 @@ export default function AccountSettings() {
     <>
       <Head title="Settings" />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Email</CardTitle>
-          <CardDescription>Update the email tied to this account</CardDescription>
-        </CardHeader>
-        <CardContent>
+      <section className="rounded-2xl bg-white p-6 shadow-xs ring-1 ring-zinc-950/10 dark:bg-zinc-900 dark:ring-white/10">
+        <div>
+          <Heading level={2}>Email</Heading>
+          <Text className="mt-1">Update the email tied to this account</Text>
+        </div>
+
+        <div className="mt-6">
           <form id="settings-email-form" onSubmit={updateEmail} className="space-y-4">
-            <div className="space-y-2">
+            <Field>
               <Label htmlFor="settings-email">Email</Label>
               <Input
                 id="settings-email"
@@ -63,28 +65,29 @@ export default function AccountSettings() {
                 value={emailForm.data.email}
                 onChange={(event) => emailForm.setData("email", event.target.value)}
               />
-              {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
-            </div>
+              {errors.email ? <ErrorMessage>{errors.email}</ErrorMessage> : null}
+            </Field>
 
             <Button type="submit" disabled={emailForm.processing}>
               {emailForm.processing ? "Saving..." : "Change email"}
             </Button>
           </form>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Password</CardTitle>
-          <CardDescription>Set a new password for this account</CardDescription>
-        </CardHeader>
-        <CardContent>
+      <section className="rounded-2xl bg-white p-6 shadow-xs ring-1 ring-zinc-950/10 dark:bg-zinc-900 dark:ring-white/10">
+        <div>
+          <Subheading>Password</Subheading>
+          <Text className="mt-1">Set a new password for this account</Text>
+        </div>
+
+        <div className="mt-6">
           <form id="settings-password-form" onSubmit={updatePassword} className="space-y-4">
             {activeForm == "password" && errors.email ? (
-              <p className="text-sm text-destructive">{errors.email}</p>
+              <ErrorMessage>{errors.email}</ErrorMessage>
             ) : null}
 
-            <div className="space-y-2">
+            <Field>
               <Label htmlFor="settings-password">New password</Label>
               <Input
                 id="settings-password"
@@ -94,10 +97,10 @@ export default function AccountSettings() {
                 value={passwordForm.data.password}
                 onChange={(event) => passwordForm.setData("password", event.target.value)}
               />
-              {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
-            </div>
+              {errors.password ? <ErrorMessage>{errors.password}</ErrorMessage> : null}
+            </Field>
 
-            <div className="space-y-2">
+            <Field>
               <Label htmlFor="settings-password-confirmation">Confirm new password</Label>
               <Input
                 id="settings-password-confirmation"
@@ -110,16 +113,16 @@ export default function AccountSettings() {
                 }
               />
               {errors.password_confirmation ? (
-                <p className="text-sm text-destructive">{errors.password_confirmation}</p>
+                <ErrorMessage>{errors.password_confirmation}</ErrorMessage>
               ) : null}
-            </div>
+            </Field>
 
             <Button type="submit" disabled={passwordForm.processing}>
               {passwordForm.processing ? "Saving..." : "Save password"}
             </Button>
           </form>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
     </>
   );
 }

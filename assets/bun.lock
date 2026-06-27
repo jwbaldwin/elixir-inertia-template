@@ -6,6 +6,7 @@
       "dependencies": {
         "@headlessui/react": "^2.2.9",
         "@inertiajs/react": "^2.3.15",
+        "@james/anron-icons": "git@github.com:jwbaldwin/anron-icons.git#1c28a900f3cc7b81a118ac967436deb2cae71f1e",
         "axios": "^1.13.5",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
@@ -184,6 +185,8 @@
     "@inquirer/type": ["@inquirer/type@3.0.10", "", { "peerDependencies": { "@types/node": ">=18" }, "optionalPeers": ["@types/node"] }, "sha512-BvziSRxfz5Ov8ch0z/n3oijRSEcEsHnhggm4xFZe93DHcUCTlutlq9Ox4SVENAfcRD22UQq7T/atg9Wr3k09eA=="],
 
     "@isaacs/cliui": ["@isaacs/cliui@9.0.0", "", {}, "sha512-AokJm4tuBHillT+FpMtxQ60n8ObyXBatq7jD2/JA9dxbDDokKQm8KMht5ibGzLVU9IJDIKK4TPKgMHEYMn3lMg=="],
+
+    "@james/anron-icons": ["@james/anron-icons@git+ssh://git@github.com:jwbaldwin/anron-icons.git#1c28a900f3cc7b81a118ac967436deb2cae71f1e", { "peerDependencies": { "react": ">=18" } }, "1c28a900f3cc7b81a118ac967436deb2cae71f1e"],
 
     "@jridgewell/gen-mapping": ["@jridgewell/gen-mapping@0.3.13", "", { "dependencies": { "@jridgewell/sourcemap-codec": "^1.5.0", "@jridgewell/trace-mapping": "^0.3.24" } }, "sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA=="],
 

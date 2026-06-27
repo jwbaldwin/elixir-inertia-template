@@ -33,7 +33,7 @@ COPY assets assets
 COPY priv priv
 COPY lib lib
 
-RUN mix fe.deploy
+RUN mix assets.deploy
 RUN mix compile
 RUN mix release
 

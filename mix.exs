@@ -85,7 +85,7 @@ defmodule TemplateApp.MixProject do
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "fe.setup": ["cmd --cd assets bun install"],
       "fe.build": ["cmd --cd assets bun run build"],
-      "fe.deploy": ["cmd --cd assets bun run build", "phx.digest"],
+      "assets.deploy": ["cmd --cd assets bun run build", "phx.digest"],
       "fe.lint": ["cmd --cd assets bun run lint"],
       "fe.format": ["cmd --cd assets bun run format"],
       "fe.format.check": ["cmd --cd assets bun run format:check"],

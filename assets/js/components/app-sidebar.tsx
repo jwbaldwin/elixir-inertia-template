@@ -30,6 +30,7 @@ import {
   SidebarSpacer,
 } from "@/components/ui/sidebar";
 import { Avatar } from "@/components/ui/avatar";
+import { Text } from "@/components/ui/text";
 import type { SharedPageProps } from "@/types/models";
 
 function pathMatches(currentPath: string, href: string, exact = false) {
@@ -72,9 +73,9 @@ export default function AppSidebar() {
     <Sidebar>
       <SidebarHeader>
         <div className="mb-3 px-2">
-          <p className="text-sm font-semibold tracking-wide text-zinc-950 dark:text-white">
+          <Text className="font-semibold tracking-wide text-zinc-950 dark:text-white">
             TemplateApp
-          </p>
+          </Text>
         </div>
 
         <SidebarSection>

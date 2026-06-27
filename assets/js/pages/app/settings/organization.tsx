@@ -1,4 +1,4 @@
-import { Head, Link, useForm, usePage } from "@inertiajs/react";
+import { Head, useForm, usePage } from "@inertiajs/react";
 import type { FormEvent } from "react";
 
 import {
@@ -7,16 +7,16 @@ import {
 } from "@/lib/invitation-display";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  DescriptionDetails,
+  DescriptionList,
+  DescriptionTerm,
+} from "@/components/ui/description-list";
+import { Divider } from "@/components/ui/divider";
+import { ErrorMessage, Field, Label } from "@/components/ui/fieldset";
+import { Heading, Subheading } from "@/components/ui/heading";
+import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -25,6 +25,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Text } from "@/components/ui/text";
 import type {
   AppInvite,
   AppOrganization,
@@ -102,50 +103,50 @@ export default function OrganizationSettings() {
     <>
       <Head title="Organization settings" />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Organization</CardTitle>
-          <CardDescription>Set the name your team sees across the app</CardDescription>
-        </CardHeader>
-        <CardContent>
+      <section className="rounded-2xl bg-white p-6 shadow-xs ring-1 ring-zinc-950/10 dark:bg-zinc-900 dark:ring-white/10">
+        <div>
+          <Heading level={2}>Organization</Heading>
+          <Text className="mt-1">Set the name your team sees across the app</Text>
+        </div>
+
+        <div className="mt-6">
           {can_edit ? (
             <form id="organization-name-form" onSubmit={submit_organization} className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
-                <div>
-                  <Label className="mb-2" htmlFor="organization-name">
-                    Name
-                  </Label>
+                <Field>
+                  <Label htmlFor="organization-name">Name</Label>
                   <Input
                     id="organization-name"
                     value={organization_form.data.name}
                     onChange={(event) => organization_form.setData("name", event.target.value)}
                     disabled={organization_form.processing}
                   />
-                </div>
+                </Field>
 
-                <Button type="submit" disabled={organization_form.processing} className="h-10">
+                <Button type="submit" disabled={organization_form.processing}>
                   {organization_form.processing ? "Saving..." : "Save"}
                 </Button>
               </div>
 
-              {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
+              {errors.name ? <ErrorMessage>{errors.name}</ErrorMessage> : null}
             </form>
           ) : (
-            <div className="space-y-1">
-              <p className="text-muted-foreground text-sm">Name</p>
-              <p className="font-medium">{organization.name}</p>
-            </div>
+            <DescriptionList>
+              <DescriptionTerm>Name</DescriptionTerm>
+              <DescriptionDetails>{organization.name}</DescriptionDetails>
+            </DescriptionList>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </section>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Organization users</CardTitle>
-          <CardDescription>Current members and roles in this organization</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Table>
+      <section className="rounded-2xl bg-white p-6 shadow-xs ring-1 ring-zinc-950/10 dark:bg-zinc-900 dark:ring-white/10">
+        <div>
+          <Subheading>Organization users</Subheading>
+          <Text className="mt-1">Current members and roles in this organization</Text>
+        </div>
+
+        <div className="mt-6">
+          <Table dense>
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
@@ -160,7 +161,7 @@ export default function OrganizationSettings() {
                 <TableRow>
                   <TableCell
                     colSpan={can_edit ? 5 : 4}
-                    className="text-muted-foreground h-20 text-center"
+                    className="h-20 text-center text-zinc-500 dark:text-zinc-400"
                   >
                     No users in this organization yet
                   </TableCell>
@@ -171,21 +172,20 @@ export default function OrganizationSettings() {
                     <TableCell className="font-medium">{member.name}</TableCell>
                     <TableCell>{member.email}</TableCell>
                     <TableCell>
-                      <Badge variant="secondary">{format_invitation_label(member.role)}</Badge>
+                      <Badge color="zinc">{format_invitation_label(member.role)}</Badge>
                     </TableCell>
                     <TableCell>{format_invitation_date_time(member.joined_at)}</TableCell>
                     {can_edit ? (
                       <TableCell className="text-right">
                         {member.user_id === current_user_id ? null : (
-                          <Button asChild variant="outline" size="sm">
-                            <Link
-                              href={`/org/settings/members/${member.id}`}
-                              method="delete"
-                              as="button"
-                              preserveScroll
-                            >
-                              Remove
-                            </Link>
+                          <Button
+                            href={`/org/settings/members/${member.id}`}
+                            method="delete"
+                            as="button"
+                            preserveScroll
+                            outline
+                          >
+                            Remove
                           </Button>
                         )}
                       </TableCell>
@@ -195,22 +195,21 @@ export default function OrganizationSettings() {
               )}
             </TableBody>
           </Table>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Invites</CardTitle>
-          <CardDescription>Invite teammates to {organization.name}</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
+      <section className="rounded-2xl bg-white p-6 shadow-xs ring-1 ring-zinc-950/10 dark:bg-zinc-900 dark:ring-white/10">
+        <div>
+          <Subheading>Invites</Subheading>
+          <Text className="mt-1">Invite teammates to {organization.name}</Text>
+        </div>
+
+        <div className="mt-6 space-y-6">
           {can_edit ? (
             <form id="organization-invite-form" onSubmit={submit_invitation} className="space-y-4">
-              <div className="grid gap-4 border-b border-border pb-6 sm:grid-cols-[minmax(0,1fr)_auto_auto] sm:items-end">
-                <div>
-                  <Label className="mb-2" htmlFor="org-invite-email">
-                    Email
-                  </Label>
+              <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto_auto] sm:items-end">
+                <Field>
+                  <Label htmlFor="org-invite-email">Email</Label>
                   <Input
                     id="org-invite-email"
                     type="email"
@@ -219,41 +218,35 @@ export default function OrganizationSettings() {
                     value={invite_form.data.email}
                     onChange={(event) => invite_form.setData("email", event.target.value)}
                   />
-                </div>
+                </Field>
 
-                <div className="sm:w-36">
-                  <Label className="mb-2" htmlFor="org-invite-role">
-                    Role
-                  </Label>
+                <Field className="sm:w-36">
+                  <Label htmlFor="org-invite-role">Role</Label>
                   <Select
+                    id="org-invite-role"
                     value={invite_form.data.role}
-                    onValueChange={(value) => invite_form.setData("role", value)}
+                    onChange={(event) => invite_form.setData("role", event.target.value)}
                   >
-                    <SelectTrigger id="org-invite-role" className="w-full data-[size=default]:h-10">
-                      <SelectValue placeholder="Select role" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="member">Member</SelectItem>
-                      <SelectItem value="admin">Admin</SelectItem>
-                    </SelectContent>
+                    <option value="member">Member</option>
+                    <option value="admin">Admin</option>
                   </Select>
-                </div>
+                </Field>
 
-                <Button className="h-10" type="submit" disabled={invite_form.processing}>
+                <Button type="submit" disabled={invite_form.processing}>
                   {invite_form.processing ? "Sending..." : "Send invite"}
                 </Button>
               </div>
 
-              {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
-              {errors.role && <p className="text-sm text-destructive">{errors.role}</p>}
+              {errors.email ? <ErrorMessage>{errors.email}</ErrorMessage> : null}
+              {errors.role ? <ErrorMessage>{errors.role}</ErrorMessage> : null}
             </form>
           ) : (
-            <p className="text-muted-foreground border-b border-border pb-6 text-sm">
-              Only organization admins can send or cancel invitations.
-            </p>
+            <Text>Only organization admins can send or cancel invitations.</Text>
           )}
 
-          <Table>
+          <Divider soft />
+
+          <Table dense>
             <TableHeader>
               <TableRow>
                 <TableHead>Email</TableHead>
@@ -262,7 +255,7 @@ export default function OrganizationSettings() {
                 <TableHead>Sent</TableHead>
                 <TableHead>Expires</TableHead>
                 {can_edit ? (
-                  <TableHead className="sticky right-0 z-20 border-l border-border bg-card text-right shadow-[-6px_0_10px_-8px_rgba(15,23,42,0.35)] before:pointer-events-none before:absolute before:inset-y-0 before:-left-3 before:w-3 before:bg-gradient-to-l before:from-card/45 before:to-transparent before:content-['']">
+                  <TableHead className="sticky right-0 z-20 border-l border-zinc-950/10 bg-white text-right shadow-[-6px_0_10px_-8px_rgba(15,23,42,0.35)] before:pointer-events-none before:absolute before:inset-y-0 before:-left-3 before:w-3 before:bg-gradient-to-l before:from-white/45 before:to-transparent before:content-[''] dark:border-white/10 dark:bg-zinc-900 dark:before:from-zinc-900/45">
                     Action
                   </TableHead>
                 ) : null}
@@ -273,7 +266,7 @@ export default function OrganizationSettings() {
                 <TableRow>
                   <TableCell
                     colSpan={can_edit ? 6 : 5}
-                    className="text-muted-foreground h-20 text-center"
+                    className="h-20 text-center text-zinc-500 dark:text-zinc-400"
                   >
                     No pending invitations
                   </TableCell>
@@ -283,22 +276,21 @@ export default function OrganizationSettings() {
                   <TableRow key={invitation.id}>
                     <TableCell className="font-medium">{invitation.email}</TableCell>
                     <TableCell>
-                      <Badge variant="secondary">{format_invitation_label(invitation.role)}</Badge>
+                      <Badge color="zinc">{format_invitation_label(invitation.role)}</Badge>
                     </TableCell>
                     <TableCell>{invitation.invited_by_email ?? "--"}</TableCell>
                     <TableCell>{format_invitation_date_time(invitation.inserted_at)}</TableCell>
                     <TableCell>{format_invitation_date_time(invitation.expires_at)}</TableCell>
                     {can_edit ? (
-                      <TableCell className="sticky right-0 z-10 border-l border-border bg-card text-right shadow-[-6px_0_10px_-8px_rgba(15,23,42,0.35)] before:pointer-events-none before:absolute before:inset-y-0 before:-left-3 before:w-3 before:bg-gradient-to-l before:from-card/45 before:to-transparent before:content-['']">
-                        <Button asChild variant="outline" size="sm">
-                          <Link
-                            href={`/org/settings/invitations/${invitation.id}`}
-                            method="delete"
-                            as="button"
-                            preserveScroll
-                          >
-                            Cancel
-                          </Link>
+                      <TableCell className="sticky right-0 z-10 border-l border-zinc-950/10 bg-white text-right shadow-[-6px_0_10px_-8px_rgba(15,23,42,0.35)] before:pointer-events-none before:absolute before:inset-y-0 before:-left-3 before:w-3 before:bg-gradient-to-l before:from-white/45 before:to-transparent before:content-[''] dark:border-white/10 dark:bg-zinc-900 dark:before:from-zinc-900/45">
+                        <Button
+                          href={`/org/settings/invitations/${invitation.id}`}
+                          method="delete"
+                          as="button"
+                          preserveScroll
+                          outline
+                        >
+                          Cancel
                         </Button>
                       </TableCell>
                     ) : null}
@@ -307,8 +299,8 @@ export default function OrganizationSettings() {
               )}
             </TableBody>
           </Table>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
     </>
   );
 }

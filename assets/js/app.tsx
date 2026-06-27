@@ -6,6 +6,7 @@ import * as React from "react";
 
 import AppLayout from "@/layouts/app-layout";
 import AuthLayout from "@/layouts/auth-layout";
+import type { AppLayoutTab } from "@/layouts/app-layout";
 
 axios.defaults.xsrfHeaderName = "x-csrf-token";
 
@@ -13,6 +14,7 @@ interface PageMeta {
   title: string;
   description?: string;
   className?: string;
+  tabs?: AppLayoutTab[];
 }
 
 interface PageModule {
@@ -37,6 +39,7 @@ createInertiaApp({
             title={page.pageMeta?.title ?? "TemplateApp"}
             description={page.pageMeta?.description}
             className={page.pageMeta?.className}
+            tabs={page.pageMeta?.tabs}
           >
             {pageElement}
           </AppLayout>

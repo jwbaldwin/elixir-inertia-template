@@ -10,6 +10,7 @@ export default defineConfig(({ command }) => ({
     tailwindcss()
   ],
   resolve: {
+    dedupe: ['react', 'react-dom'],
     alias: {
       '@': path.resolve(import.meta.dirname, './js')
     }

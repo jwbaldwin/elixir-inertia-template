@@ -1,8 +1,14 @@
-import { Head, Link, useForm, usePage } from "@inertiajs/react";
+import { Head, useForm, usePage } from "@inertiajs/react";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  DescriptionDetails,
+  DescriptionList,
+  DescriptionTerm,
+} from "@/components/ui/description-list";
+import { Heading } from "@/components/ui/heading";
 import { Status } from "@/components/ui/status";
+import { Text } from "@/components/ui/text";
 import { formatInvitationDateTime, formatInvitationLabel } from "@/lib/invitation-display";
 import type { AppInvite, UnauthenticatedPageProps } from "@/types/models";
 
@@ -44,28 +50,28 @@ export default function OrganizationInvite() {
       <Head title="Organization invitation" />
 
       {invitation ? (
-        <Card>
-          <CardHeader>
-            <CardTitle>{invitation.organization_name ?? "Organization"}</CardTitle>
-            <CardDescription>
+        <section className="rounded-2xl bg-white p-6 shadow-xs ring-1 ring-zinc-950/10 dark:bg-zinc-900 dark:ring-white/10">
+          <div>
+            <Heading>{invitation.organization_name ?? "Organization"}</Heading>
+            <Text className="mt-1">
               {invitation.invited_by_email ?? "A teammate"} invited you as{" "}
               {formatInvitationLabel(invitation.role)}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2 text-sm">
-              <p>
-                <span className="text-muted-foreground">Invited email:</span> {invitation.email}
-              </p>
-              <p>
-                <span className="text-muted-foreground">Expires:</span>{" "}
+            </Text>
+          </div>
+
+          <div className="mt-6 space-y-4">
+            <DescriptionList>
+              <DescriptionTerm>Invited email</DescriptionTerm>
+              <DescriptionDetails>{invitation.email}</DescriptionDetails>
+              <DescriptionTerm>Expires</DescriptionTerm>
+              <DescriptionDetails>
                 {formatInvitationDateTime(invitation.expires_at)}
-              </p>
-              <p>
-                <span className="text-muted-foreground">Status:</span>{" "}
+              </DescriptionDetails>
+              <DescriptionTerm>Status</DescriptionTerm>
+              <DescriptionDetails>
                 <Status status={invitation.status} />
-              </p>
-            </div>
+              </DescriptionDetails>
+            </DescriptionList>
 
             {state === "ready" && (
               <Button type="button" disabled={acceptForm.processing} onClick={acceptInvitation}>
@@ -73,48 +79,40 @@ export default function OrganizationInvite() {
               </Button>
             )}
 
-            {state === "needs_login" && (
-              <Button asChild>
-                <Link href={loginUrl}>Log in to continue</Link>
-              </Button>
-            )}
+            {state === "needs_login" && <Button href={loginUrl}>Log in to continue</Button>}
 
             {state === "email_mismatch" && (
-              <p className="text-sm text-destructive">
+              <Text className="text-red-600 dark:text-red-500">
                 You are signed in as {auth.user?.email ?? "another account"}. This invitation was
                 sent to {invitation.email}. Log in with that account to accept.
-              </p>
+              </Text>
             )}
 
             {state === "unconfirmed" && (
-              <p className="text-sm text-destructive">
+              <Text className="text-red-600 dark:text-red-500">
                 Confirm your account email before accepting this invitation.
-              </p>
+              </Text>
             )}
 
             {state === "expired" && (
-              <p className="text-sm text-destructive">
+              <Text className="text-red-600 dark:text-red-500">
                 This invitation has expired. Ask an organization admin to send a new one.
-              </p>
+              </Text>
             )}
 
             {state === "closed" && (
-              <p className="text-sm text-destructive">
+              <Text className="text-red-600 dark:text-red-500">
                 This invitation is no longer pending. If you still need access, ask for a fresh
                 invite.
-              </p>
+              </Text>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </section>
       ) : (
-        <Card>
-          <CardHeader>
-            <CardTitle>Invite not found</CardTitle>
-            <CardDescription>
-              This invitation link is invalid or no longer available
-            </CardDescription>
-          </CardHeader>
-        </Card>
+        <section className="rounded-2xl bg-white p-6 shadow-xs ring-1 ring-zinc-950/10 dark:bg-zinc-900 dark:ring-white/10">
+          <Heading>Invite not found</Heading>
+          <Text className="mt-1">This invitation link is invalid or no longer available</Text>
+        </section>
       )}
     </>
   );
