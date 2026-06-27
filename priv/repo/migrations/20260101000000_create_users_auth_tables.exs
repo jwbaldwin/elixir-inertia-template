@@ -1,7 +1,13 @@
 defmodule TemplateApp.Repo.Migrations.CreateUsersAuthTables do
   use Ecto.Migration
 
+  # Both tables are created empty here, so indexes and references cannot block existing writes.
+  # excellent_migrations:safety-assured-for-this-file index_not_concurrently
+  # excellent_migrations:safety-assured-for-this-file column_reference_added
+
   def change do
+    # Install the email column type without rewriting existing tables.
+    # excellent_migrations:safety-assured-for-next-line raw_sql_executed
     execute "CREATE EXTENSION IF NOT EXISTS citext", ""
 
     create table(:users) do

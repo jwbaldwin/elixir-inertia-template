@@ -1,6 +1,11 @@
 defmodule TemplateApp.Repo.Migrations.CreateInvitations do
   use Ecto.Migration
 
+  # The table is created empty here; indexes, references, and checks validate no existing rows.
+  # excellent_migrations:safety-assured-for-this-file index_not_concurrently
+  # excellent_migrations:safety-assured-for-this-file column_reference_added
+  # excellent_migrations:safety-assured-for-this-file check_constraint_added
+
   def change do
     create table(:invitations) do
       add :organization_id, references(:organizations, on_delete: :delete_all), null: false

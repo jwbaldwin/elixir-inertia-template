@@ -1,7 +1,6 @@
 defmodule TemplateAppWeb.Layouts do
   @moduledoc """
-  This module holds layouts and related functionality
-  used by your application.
+  Root HTML, asset tags, and shared page layouts
   """
   use TemplateAppWeb, :html
 
@@ -39,6 +38,8 @@ defmodule TemplateAppWeb.Layouts do
                      ".vite",
                      "manifest.json"
                    ])
+
+    @external_resource @manifest_path
 
     if File.exists?(@manifest_path) do
       @manifest @manifest_path |> File.read!() |> Jason.decode!()

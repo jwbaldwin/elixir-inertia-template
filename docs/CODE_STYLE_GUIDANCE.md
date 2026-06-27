@@ -12,6 +12,17 @@ The pattern is clear: prefer less defensive/duplicative code, stronger ownership
 - Runtime config should not fall back to checked-in secret placeholders
 - Add provider defaults to config only after a real provider exists
 
+## Simplicity First
+
+- Prefer the smallest code that clearly expresses the real product path
+- Do not add helpers just to name one standard-library call, one config read, or one branch
+- Do not repeat validation of internal contracts already established at the boundary
+- Do not add fallback branches for states the product does not support
+- Translate errors only when the caller can recover from them or display them usefully
+- Let broken provider response shapes, missing required fields, and impossible internal states fail clearly
+- Keep optionality out of the code unless the product has an optional path
+- Extract functions when they own meaningful behavior or a reusable boundary, not just to shorten a caller
+
 ## Reuse Existing Boundaries
 
 - Reuse existing boundaries before adding provider-specific or flow-specific logic

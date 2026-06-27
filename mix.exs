@@ -5,12 +5,35 @@ defmodule TemplateApp.MixProject do
     [
       app: :template_app,
       version: "0.1.0",
-      elixir: "~> 1.15",
+      elixir: "~> 1.19",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      compilers: [:phoenix_live_view] ++ Mix.compilers(),
+      compilers: [:boundary] ++ quality_compilers() ++ [:phoenix_live_view] ++ Mix.compilers(),
+      unused: [
+        severity: :hint,
+        ignore: [
+          {:_, :child_spec, 1},
+          {:_, ~r/^__.*__\??$/, :_},
+          {~r/^TemplateAppWeb\..*Controller$/, :_, 2..3},
+          {TemplateAppWeb.Router, :_, 2},
+          TemplateAppWeb,
+          TemplateAppWeb.Endpoint,
+          TemplateAppWeb.CoreComponents,
+          TemplateAppWeb.Layouts,
+          TemplateAppWeb.ErrorHTML,
+          TemplateAppWeb.ErrorJSON,
+          TemplateAppWeb.Telemetry,
+          TemplateApp.Mailer,
+          TemplateApp.Repo,
+          TemplateApp.Release,
+          TemplateApp.DataCase,
+          TemplateAppWeb.ConnCase,
+          TemplateApp.Factory,
+          TemplateApp.TestHelpers
+        ]
+      ],
       listeners: [Phoenix.CodeReloader]
     ]
   end
@@ -27,13 +50,17 @@ defmodule TemplateApp.MixProject do
 
   def cli do
     [
-      preferred_envs: [{:precommit, :test}, {:"test.interactive", :test}]
+      preferred_envs: [check: :test, precommit: :test, "test.interactive": :test]
     ]
   end
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
+
+  defp quality_compilers do
+    if Mix.env() in [:dev, :test], do: [:unused], else: []
+  end
 
   # Specifies your project dependencies.
   #
@@ -66,6 +93,16 @@ defmodule TemplateApp.MixProject do
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:boundary, "~> 0.11", runtime: false},
+      {:ex_check, "~> 0.17", only: [:dev, :test], runtime: false},
+      {:ex_dna, "~> 1.5", only: [:dev, :test], runtime: false},
+      {:ex_slop, "~> 0.4", only: [:dev, :test], runtime: false},
+      {:excellent_migrations, "~> 0.1.10", only: [:dev, :test], runtime: false},
+      {:jump_credo_checks, "~> 0.5", only: [:dev, :test], runtime: false},
+      {:mix_audit, "~> 2.1", only: [:dev, :test], runtime: false},
+      {:mix_unused, "~> 0.4", only: [:dev, :test], runtime: false},
+      {:reach, "~> 2.8", only: [:dev, :test], runtime: false},
+      {:sobelow, "~> 0.16", only: [:dev, :test], runtime: false},
       {:styler, "~> 1.10", only: [:dev, :test], runtime: false},
       {:mix_test_interactive, "~> 5.1", only: [:dev, :test], runtime: false}
     ]
@@ -93,13 +130,7 @@ defmodule TemplateApp.MixProject do
       "lint.full": ["lint", "fe.lint"],
       "format.full": ["format", "fe.format"],
       "format.check.full": ["format --check-formatted", "fe.format.check"],
-      precommit: [
-        "compile --warnings-as-errors",
-        "deps.unlock --unused",
-        "format.check.full",
-        "lint.full",
-        "test"
-      ]
+      precommit: ["check"]
     ]
   end
 end

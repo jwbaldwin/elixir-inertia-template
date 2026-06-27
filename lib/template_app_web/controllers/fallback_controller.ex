@@ -44,6 +44,8 @@ defmodule TemplateAppWeb.FallbackController do
     end
   end
 
+  # ErrorHTML returns a fixed status message; no request content enters this response.
+  # sobelow_skip ["XSS.SendResp"]
   defp render_error(conn, status) do
     if json_error_request?(conn) do
       render_json_error(conn, status)

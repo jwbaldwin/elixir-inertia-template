@@ -9,7 +9,11 @@ defmodule TemplateAppWeb.Router do
     plug(:fetch_live_flash)
     plug(:put_root_layout, html: {TemplateAppWeb.Layouts, :root})
     plug(:protect_from_forgery)
-    plug(:put_secure_browser_headers)
+
+    plug(:put_secure_browser_headers, %{
+      "content-security-policy" => "base-uri 'self'; object-src 'none'; frame-ancestors 'self'"
+    })
+
     plug(:fetch_current_scope_for_user)
     plug(Inertia.Plug)
   end
@@ -19,7 +23,11 @@ defmodule TemplateAppWeb.Router do
     plug(:fetch_session)
     plug(:fetch_live_flash)
     plug(:protect_from_forgery)
-    plug(:put_secure_browser_headers)
+
+    plug(:put_secure_browser_headers, %{
+      "content-security-policy" => "base-uri 'self'; object-src 'none'; frame-ancestors 'self'"
+    })
+
     plug(:fetch_current_scope_for_user)
   end
 

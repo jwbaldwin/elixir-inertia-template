@@ -190,7 +190,8 @@ defmodule TemplateAppWeb.UserAuth do
   defp put_default_active_organization_in_session(conn, user) do
     organizations = Organizations.list_organizations_by_user(user)
 
-    put_active_organization(conn, active_organization(organizations, get_session(conn, @active_organization_session_key)))
+    organization = active_organization(organizations, get_session(conn, @active_organization_session_key))
+    put_active_organization(conn, organization)
   end
 
   # Do not renew session if the user is already logged in

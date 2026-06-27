@@ -14,15 +14,44 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  scaffold:
-    name: "[scaffold]"
+  check:
+    name: Quality checks
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: checkout
         uses: actions/checkout@v5
 
-      - name: checks not enabled yet
-        run: |
-          echo "CI scaffold is in place."
-          echo "Add install, lint, test, typecheck, and build jobs when this project is ready for enforced checks."
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: "28.3"
+          elixir-version: "1.19.4"
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.9"
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-otp28.3-elixir1.19.4-${{ hashFiles('mix.lock') }}
+
+      - run: mix deps.get --check-locked
+      - run: bun install --frozen-lockfile
+        working-directory: assets
+      - run: mix check

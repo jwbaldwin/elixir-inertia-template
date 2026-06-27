@@ -9,7 +9,7 @@ The template includes the reusable foundation expected in many product apps: aut
 - Backend: Elixir, Phoenix, Ecto, PostgreSQL, Oban, Req
 - Frontend: Inertia, React, TypeScript, Vite, Bun, Tailwind, shadcn components
 - Testing: ExUnit, ExMachina, Mimic, Vitest
-- Quality: Credo, Styler, oxlint, oxfmt
+- Quality: ExCheck, Boundary, Credo, ExDNA, ExSlop, ExcellentMigrations, Jump Credo Checks, MixAudit, MixUnused, Reach, Sobelow, Styler, oxlint, oxfmt
 - Deployment: Kamal
 
 ## Why Use This Template
@@ -53,7 +53,6 @@ Read `AGENTS.md` before adding real product code. The taxonomy there is a contra
 ## Included As Scaffolding
 
 - Kamal deployment files.
-- GitHub CI workflow scaffold.
 - Remote helper scripts: `bin/connect` and `bin/logs`.
 - A starter dashboard to replace with the first real product page.
 
@@ -67,11 +66,11 @@ Read `AGENTS.md` before adding real product code. The taxonomy there is a contra
    - `template_app` in paths, release names, cookies, database names, and deployment service names
 3. Update `README.md`, `AGENTS.md`, `.env.example`, `config/deploy.yml`, and package metadata for the new project.
 4. Update `bin/connect` and `bin/logs` defaults if the deploy host, container pattern, or release binary changes.
-5. Run `mix format`, `mix test`, `mix fe.format`, `mix fe.lint`, and `mix fe.build` before first commit.
+5. Run `mix check` before first commit.
 
 ## Setup
 
-Install backend dependencies, frontend dependencies, create the database, and run migrations:
+Use the Elixir, Erlang, Bun, and PostgreSQL versions in `.mise.toml`. Install dependencies, create the database, and run migrations:
 
 ```sh
 mix setup
@@ -118,7 +117,9 @@ mix phx.gen.secret
 
 ## Testing And Linting
 
-- Run `mix precommit` before handing off backend changes.
+- Run `mix check` (or `mix precommit`) before handing off changes. CI runs the same checks.
+- The suite checks compilation and boundaries, formatting, style, migrations, duplication, dependencies, security, architecture, backend/frontend tests, TypeScript, and the frontend build.
+- Read [Quality Checks](docs/QUALITY_CHECKS.md) for tool settings, advisory checks, and scoped exceptions.
 - Run `bun run lint` and `bun run test` from `assets/` for frontend changes.
 - Run `bun run build` when changing imports, page resolution, Vite config, or deploy-facing assets.
 - Prefer integration tests through controllers and real database writes when they prove more than isolated unit tests.

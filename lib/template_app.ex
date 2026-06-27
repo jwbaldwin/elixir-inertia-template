@@ -6,4 +6,19 @@ defmodule TemplateApp do
   Contexts are also responsible for managing your data, regardless
   if it comes from the database, an external API or others.
   """
+
+  use Boundary,
+    deps: [],
+    exports: [
+      Accounts,
+      Accounts.Organization,
+      Accounts.Scope,
+      Accounts.User,
+      Authorization,
+      Mailer,
+      Organizations,
+      Organizations.Handlers.OrganizationInvite,
+      Organizations.Handlers.OrganizationSettings,
+      Repo
+    ]
 end

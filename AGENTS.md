@@ -38,6 +38,7 @@ Read `docs/CODE_STYLE_GUIDANCE.md` for code review preferences and code style gu
 ## Project Guidelines
 
 - Use `mix precommit` when you are done with backend changes and fix pending issues
+- `mix precommit` runs `mix check`, the same suite used by CI; see `docs/QUALITY_CHECKS.md` before changing check settings or adding exceptions
 - Use the included `Req` library for HTTP requests; avoid HTTPoison, Tesla, and direct `:httpc`
 - Keep Phoenix as the source of truth; do not duplicate server-owned state in React
 - Use Inertia for server-rendered page props and React pages
@@ -61,6 +62,8 @@ Read `docs/CODE_STYLE_GUIDANCE.md` for code review preferences and code style gu
 ## First-Principles Iteration
 
 - Do not optimize around an existing implementation unless compatibility is explicitly required
+- Prefer the simplest code that expresses the real product path; add helpers, checks, and fallback branches only when current behavior needs them
+- Assume internal contracts hold after boundary validation; let broken internal/provider contracts fail clearly
 - This template is meant for early-stage product software: expect to throw away code, rewrite flows, change abstractions, tighten contracts, and delete behavior that no longer serves the current product
 - Start from the route, screen, job, or domain behavior needed now; then design the smallest data contract and implementation for that need
 - Treat legacy shapes, old props, fallback behavior, and broad compatibility as traps unless there is a concrete reason to preserve them
@@ -166,6 +169,7 @@ This taxonomy is the default shape for application code. Use it as a pragmatic m
 ### Controller/Handler/Service Flow
 
 - Controllers handle transport concerns: HTTP params, headers, status codes, redirects, flash, and Inertia props
+- Return named errors only when a caller can make a specific recovery or response decision from that name
 - Controllers may call one or two Services directly when the flow is simple and no orchestration layer is needed
 - Introduce a Handler when orchestration/branching across multiple Services/Finders is needed
 - Do not add a Handler when a single Service call is sufficient
@@ -323,7 +327,7 @@ This template primarily uses Inertia. These rules apply if a project adds LiveVi
 - Oban installation and default queue pattern
 - Handler/Service/Finder/Value taxonomy examples under `lib/template_app/organizations`
 - ExMachina factory and test helper conventions
-- CI scaffold that can grow into frontend/backend checks when a new project is ready
+- CI quality suite shared with local `mix check`
 - Dockerfile and optional Kamal sample as deployment scaffolding, not mandatory hosting policy
 - `README.md`, `.env.example`, `bin/connect`, `bin/logs`, and this guide as onboarding contracts
 

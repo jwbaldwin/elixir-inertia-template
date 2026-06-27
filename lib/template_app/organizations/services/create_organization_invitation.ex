@@ -69,9 +69,13 @@ defmodule TemplateApp.Organizations.Services.CreateOrganizationInvitation do
     end
   end
 
+  # Invitations accept string-keyed form params and atom-keyed Ecto attributes.
+  # credo:disable-for-next-line ExSlop.Check.Warning.DualKeyAccess
   defp extract_email(attrs), do: Map.get(attrs, "email") || Map.get(attrs, :email)
 
   defp extract_role(attrs) do
+    # Preserve the same attribute contract as extract_email/1.
+    # credo:disable-for-next-line ExSlop.Check.Warning.DualKeyAccess
     role = Map.get(attrs, "role") || Map.get(attrs, :role)
 
     case role do

@@ -102,6 +102,8 @@ defmodule TemplateApp.Accounts do
   end
 
   defp company_name_from_registration_attrs(attrs) when is_map(attrs) do
+    # Registration accepts string-keyed form params and atom-keyed Ecto attributes.
+    # credo:disable-for-next-line ExSlop.Check.Warning.DualKeyAccess
     case Map.get(attrs, "company_name") || Map.get(attrs, :company_name) do
       value when is_binary(value) -> String.trim(value)
       _ -> ""

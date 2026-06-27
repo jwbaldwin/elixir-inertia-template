@@ -15,8 +15,9 @@
 - Mix aliases for setup, frontend commands, linting, formatting, and precommit
 - Phoenix, Ecto, PostgreSQL, Oban, Swoosh, Req, Bodyguard, dotenvy, Bandit
 - Bun, Vite, React, TypeScript, Tailwind, shadcn-style UI primitives
-- Credo, Styler, oxlint, oxfmt, Vitest
-- GitHub Actions CI scaffold
+- ExCheck, Boundary, Credo, ExDNA, ExSlop, ExcellentMigrations, Jump Credo Checks, MixAudit, MixUnused, Reach, Sobelow, Styler
+- oxlint, oxfmt, TypeScript, Vitest
+- GitHub Actions running the same `mix check` suite as local development
 - Dockerfile and optional Kamal deployment sample
 
 ## Documentation Kept

@@ -129,10 +129,13 @@ defmodule TemplateApp.Organizations do
   end
 
   defp build_organization_attrs(attrs) do
+    # Match Ecto's atom-keyed attributes and string-keyed form params at this boundary.
+    # credo:disable-for-next-line ExSlop.Check.Warning.DualKeyAccess
     name = Map.get(attrs, :name) || Map.get(attrs, "name")
 
     %{
       name: name,
+      # credo:disable-for-next-line ExSlop.Check.Warning.DualKeyAccess
       slug: Map.get(attrs, :slug) || Map.get(attrs, "slug") || SlugifyOrganizationName.call(name)
     }
   end
