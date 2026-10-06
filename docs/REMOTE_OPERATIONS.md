@@ -1,5 +1,7 @@
 # Remote Operations Helpers
 
+See [Deployment](DEPLOYMENT.md) for release-image migrations, access, and rollout guidance.
+
 This template includes two optional helper scripts for Docker/Kamal-style deployments:
 
 - `bin/connect`: opens a remote IEx session inside the running app container

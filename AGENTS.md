@@ -49,6 +49,8 @@ Read `docs/CODE_STYLE_GUIDANCE.md` for code review preferences and code style gu
 
 ## Remote Helper Scripts
 
+Read `docs/DEPLOYMENT.md` before adapting deployment configuration or adding a deploy workflow. Keep migrations tied to the release image and keep deployment approval separate from CI checks.
+
 `bin/connect` and `bin/logs` are optional remote-debug helpers for Docker/Kamal-style deployments. Keep them generic and update them when a new project changes the deploy shape.
 
 - Use `bin/connect` to open a remote IEx session inside the running app container

@@ -128,5 +128,6 @@ mix phx.gen.secret
 ## Deployment Notes
 
 Kamal scaffolding is included, but deployment is intentionally not wired into CI.
+Read [Deployment](docs/DEPLOYMENT.md) when adapting the release and Kamal sample to a real project.
 Use `docs/REMOTE_OPERATIONS.md` before connecting `bin/connect` or `bin/logs` to a real host.
 Choose hosting, secret storage, and rollback policy before enabling production deploys.
